@@ -23,8 +23,10 @@ public class Pos {
     }
 
     public List<String> generateOtherLine(){
-        List<String> otherLines = null;
-
+        List<String> otherLines = new ArrayList<>();
+        otherLines.add("***<store earning no money>Receipt ***");
+        otherLines.add("----------------------");
+        otherLines.add("**********************");
         return otherLines;
     }
 
