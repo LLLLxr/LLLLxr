@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Pos {
-    HashMap<String,Item> database = new HashMap<String, Item>();
-    List<String> orders = new ArrayList<>();
-
-    public Pos(HashMap<String, Item> database, List<String> orders) {
-        this.database = database;
-        this.orders = orders;
-    }
+//    HashMap<String,Item> database = new HashMap<String, Item>();
+//    List<String> orders = new ArrayList<>();
+//
+//    public Pos(HashMap<String, Item> database, List<String> orders) {
+//        this.database = database;
+//        this.orders = orders;
+//    }
 
     public List<String> generateReceipt(HashMap<String,Item> database, List<String> orders){
         List<String> receipts = new ArrayList<>();
@@ -40,12 +40,16 @@ public class Pos {
         }
 
 
+
         return receipts;
     }
 
-    public String generateTotalPrice(HashMap<String,Item> database,List<String> finishingOrders){
-        String totalPrice = null;
-
+    public String generateTotalPrice(HashMap<String,Item> database,List<String> orders){
+        int price = 0;
+        for (int i = 0; i < orders.size(); i++) {
+            price += caculateOrderPrice(database,orders.get(i));
+        }
+        String totalPrice = "Total: + " + price + " + (yuan)";
         return totalPrice;
     }
 
@@ -64,6 +68,7 @@ public class Pos {
 
     public int caculateOrderPrice(HashMap<String,Item> database,String order){
         int price = 0;
+        price += database.get(order).price;
         return price;
     }
 
@@ -87,7 +92,9 @@ public class Pos {
         database.put("ITEM000004",new Item( "ITEM000004","Battery",2));
         database.put("ITEM000005",new Item( "ITEM000005","Instant Noodles",4));
 
-        Pos pos = new Pos(database,orders);
+        Pos pos = new Pos();
+        List<String> printReceipt = pos.generateReceipt(database,orders);
+        for (String node : printReceipt) System.out.println(node);
 
     }
 }
