@@ -5,9 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Pos {
-    public List<List<String>> generateReceipt(HashMap<String,Item> database,List<String> orders){
-        List<List<String>> receipts = new ArrayList<>();
+    HashMap<String,Item> database = new HashMap<String, Item>();
+    public List<String> generateReceipt(HashMap<String,Item> database,List<String> orders){
+        List<String> receipts = new ArrayList<>();
+        List<String> unFinishingReceipts = generateOrders(orders);
+        List<String> otherLines= generateOtherLine();
+        String totalPrice = generateTotalPrice(database,orders);
+        receipts.add(otherLines.get(0));
 
+
+        for (String receipt : unFinishingReceipts){
+            receipts.add(receipt);
+        }
+        receipts.add(otherLines.get(1));
+        receipts.add(totalPrice);
+        receipts.add(otherLines.get(2));
         return receipts;
     }
 
@@ -16,7 +28,7 @@ public class Pos {
         return receipts;
     }
 
-    public String generateTotalPrice(HashMap<String,Item> database,List<String> orders){
+    public String generateTotalPrice(HashMap<String,Item> database,List<String> finishingOrders){
         String totalPrice = null;
 
         return totalPrice;
