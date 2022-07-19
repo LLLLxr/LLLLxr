@@ -16,7 +16,7 @@ public class Pos {
 
     public List<String> generateReceipt(HashMap<String,Item> database, List<String> orders){
         List<String> receipts = new ArrayList<>();
-        List<String> unFinishingReceipts = generateFinishingOrders(orders);
+        List<String> unFinishingReceipts = generateFinishingOrders(orders,database);
         List<String> otherLines= generateOtherLine();
         String totalPrice = generateTotalPrice(database,orders);
         receipts.add(otherLines.get(0));
@@ -30,7 +30,7 @@ public class Pos {
         return receipts;
     }
 
-    public List<String> generateFinishingOrders(List<String> orders){
+    public List<String> generateFinishingOrders(List<String> orders,HashMap<String,Item> database){
         List<String> receipts = new ArrayList<>();
         HashMap<String,Integer>  finishingOrders = new HashMap<>();
 
@@ -38,8 +38,10 @@ public class Pos {
             if (!finishingOrders.containsKey(itemName)) finishingOrders.put(itemName,1);
                 else finishingOrders.put(itemName,finishingOrders.get(itemName) + 1);
         }
-
-
+        for (String key : finishingOrders.keySet()) {
+            Item node = database.get(key);
+            receipts.add("Name: " + node.name + ", Quantity: "+ finishingOrders.get(key) + ", Unit price: " + node.price + "(yuan), Subtotal: " + finishingOrders.get(key)*node.price + " (yuan)");
+        }
 
         return receipts;
     }
@@ -49,7 +51,7 @@ public class Pos {
         for (int i = 0; i < orders.size(); i++) {
             price += caculateOrderPrice(database,orders.get(i));
         }
-        String totalPrice = "Total: + " + price + " + (yuan)";
+        String totalPrice = "Total: " + price + " (yuan)";
         return totalPrice;
     }
 
@@ -59,11 +61,6 @@ public class Pos {
         otherLines.add("----------------------");
         otherLines.add("**********************");
         return otherLines;
-    }
-
-    public String generatereceipt(List<String> orders){
-        String receipt = null;
-        return receipt;
     }
 
     public int caculateOrderPrice(HashMap<String,Item> database,String order){
